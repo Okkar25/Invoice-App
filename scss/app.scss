@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap");
+
+@import "../node_modules/bootstrap-icons/font/bootstrap-icons.min.css";
+
+@import "../node_modules/animate.css/animate.min.css";
+
+$primary: #333;
+$secondary: #403d39;
+$warning: #edede9;
+$info: #e6e9ec;
+$light: #cce3de;
+$font-family-sans-serif: "Rubik", sans-serif;
+$border-width: 1px;
+$border-color: $primary;
+$border-radius: 0;
+$border-radius-lg: 0;
+$border-radius-sm: 0;
+$form-select-border-radius: 0;
+$btn-border-width: 2px;
+$btn-border-radius: 5px;
+
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+
+#recordTable {
+  .empty-row {
+    display: none;
+  }
+
+  .empty-row:last-child {
+    display: table-row;
+  }
+
+  .record-row:hover .record-row-delete {
+    // display: block;
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .record-row-delete {
+    // display: none;
+    opacity: 0;
+    left: 100%;
+    top: 3px;
+    transform: translateX(30px);
+    transition: 0.5s;
+    pointer-events: none;
+  }
+
+  .record-quantity-control {
+    display: inline-block;
+    text-align: center;
+    opacity: 0;
+    transition: 0.8s;
+    pointer-events: none;
+    background-color: $warning;
+  }
+
+  .record-row:hover .record-quantity-control {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+  }
+
+  .record-quantity-plus {
+    transform: translateX(30px);
+  }
+
+  .record-quantity-plus:hover {
+    background-color: #588157;
+  }
+
+  .record-quantity-minus {
+    transform: translateX(-30px);
+  }
+
+  .record-quantity-minus:hover {
+    background-color: #e63946;
+  }
+}
+
+// # number reset using pseudo element (::before)
+body {
+  counter-reset: section;
+}
+.record-number::after {
+  counter-increment: section;
+  content: counter(section);
+}
+
+.dollar::before {
+  content: "$ ";
+}

@@ -1,0 +1,177 @@
+// ------------ Inserting products into select - option ------------
+
+// method 1
+const option = document.createElement("option");
+option.innerText = el.name;
+option.value = el.id;
+product.append(option);
+
+// method 2
+product.append(new Option(el.name, el.id)); // new Option (innerText, value)
+
+=========================================================================================================
+
+// ------------------ calculating total cost ------------------
+
+
+......... Calculating total for all products ***** (method 1) ..........
+
+total = 0 at line 99 (global variable)
+total += parseFloat(cost);
+recordTotal.innerText = `$ ${total}`;
+
+method 1 => 
+let total = 0 needs to be ** global variable **
+each value was added one time only without overlapping 
+product value added pattern => 1 - 2 - 3 - 4 - 5 
+
+
+.......... Calculating total for all products ***** (method 2) ...........
+
+const calculateTotal = () => {
+  let sum = 0;
+  const allRecords = document.querySelectorAll(".record-cost");
+  //   console.clear();
+  allRecords.forEach((el) => {
+    sum += parseFloat(el.innerText);
+  // console.log(sum);
+  });
+  recordTotal.innerText = `$ ${sum}`;
+  // console.log(allRecords);
+  // console.log([...allRecords]);
+};
+
+method 2 => 
+let total = 0 needs to be ** local variable **
+each value was added multiple times 'with looping' overlapping each other 
+So, the value 'total' needs to be reset to its original value '0'
+product value added pattern => 1 - 1 2 - 1 2 3 - 1 2 3 4 - 1 2 3 4 5
+
+
+.......... Calculating total for all products ***** (method 3) ...........
+
+// spread operator 
+// allRecords is iterable => NodeList - array-like object
+// spread operator can be used => [...allRecords]
+// Spread operator is used to transform iterable such as NodeList (array-like object) into Array
+ 
+const calculateTotal = () => {
+  const allRecords = document.querySelectorAll(".record-cost");
+
+  recordTotal.innerText = [...allRecords].reduce(
+    (pv, cv) => pv + parseFloat(cv.innerText),
+    0
+  );
+};
+
+=========================================================================================================
+
+// --------- Adding options into select -----------
+
+................. method 1 .................
+
+ recordRows.innerHTML += `
+  <tr class="record-row">
+  <td>${start}</td>
+  <td class="record-product">${currentProduct.name}</td>
+  <td class="record-price">${currentProduct.price}</td>
+  <td class="record-quantity">${quantity.valueAsNumber}</td>
+  <td class="record-cost">${cost}</td>
+  </tr>
+  `;
+
+................. method 2 .................
+
+const tableRow = document.createElement("tr");
+  tableRow.classList.add("record-row");
+  tableRow.innerHTML = `
+      <td>${start}</td>
+      <td class="record-product">${currentProduct.name}</td>
+      <td class="record-price">${currentProduct.price}</td>
+      <td class="record-quantity">${quantity.valueAsNumber}</td>
+      <td class="record-cost">${cost}</td>
+      `;
+
+................. method 3 .................
+
+// FormData can also be used 
+
+const formData = new FormData(formRecord);
+
+========================================================================================================
+
+// ---------- Updating quantity and cost if products added are identical -----------
+
+// custom attribute inserted to identify same product category
+
+ tableRow.setAttribute("product-id", productId);
+
+ const isExistRow = document.querySelector(`[product-id='${product.value}']`);
+
+  if (isExistRow) {
+    let currentQuantity = isExistRow.querySelector(".record-quantity");
+    let currentPrice = isExistRow.querySelector(".record-price");
+    let currentCost = isExistRow.querySelector(".record-cost");
+
+    let updatedQuantity =
+      parseFloat(currentQuantity.innerText) + quantity.valueAsNumber;
+    
+    (method 1)
+    let updatedCost =
+      parseFloat(currentCost.innerText) +
+      quantity.valueAsNumber * parseFloat(currentPrice.innerText);
+
+     (method 2) => string operator only works with '+' not '*'
+    let updatedCost =
+      parseFloat(currentCost.innerText) +
+      quantity.valueAsNumber * currentPrice.innerText; 
+      
+      (method 3)
+      let updatedCost = updatedQuantity * currentPrice.innerText;
+
+    currentQuantity.innerText = updatedQuantity;
+
+    currentCost.innerText = updatedCost;
+  } 
+
+  else {
+    // create new row
+    recordRows.append(createRow(product.value, quantity));
+  }
+
+========================================================================================================
+
+ // row count #
+
+ let rowCount = 0; (global variable)
+ inside createRow() => 
+ rowCount += 1 
+ tableRow.innerHTML = ` <td>${rowCount}</td> `
+
+ let rowCount = 1; (global variable)
+ tableRow.innerHTML = ` <td>${rowCount++}</td> `
+
+// new method
+
+<td class="record-number"></td>
+
+body {
+  counter-reset: section;
+}
+.record-number::after {
+  counter-increment: section;
+  content: counter(section);
+}
+
+========================================================================================================
+
+// display - none when printed 
+d-print-none 
+
+=======================================================================================================
+
+#f7ede2
+
+//main
+#f6fff8
+#cce3de
